@@ -1,2 +1,6 @@
 
 #FLX_WEBGL_ENABLED=False
+
+#FLX_CACHE_ENABLED=False
+
+#FLX_CACHE_STRATEGY="default"
