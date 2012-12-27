@@ -187,7 +187,9 @@ Public
 	
 	Method OnRender:Int()
 		If (_state <> _requestedState) Then
+			Cls
 			_SwitchState()
+			Cls
 			Return 0
 		EndIf
 	
