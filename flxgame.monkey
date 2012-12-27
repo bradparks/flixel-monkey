@@ -131,7 +131,10 @@ Public
 		_created = False
 	End Method
 	
-	Method OnCreate:Int()	
+	Method OnCreate:Int()
+	#If TARGET = "html5"
+		_ForceAssetsLoad()
+	#End	
 		_InitData()		
 		_Step()
 

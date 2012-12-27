@@ -38,4 +38,5 @@ Extern
 
 #If TARGET = "html5"
 	Function IsIE:Bool() = "flixel.isIE"
+	Function _ForceAssetsLoad:Bool() = "flixel.forceAssetsLoad"
 #End

@@ -39,3 +39,39 @@ flixel.isIE = function(){
  
     return v > 4 ? v : false; 
 }
+
+flixel.forceAssetsLoad = function() {
+	var data = META_DATA.split('\n');
+	var path = [];	
+	var assetsCache = [];	
+	
+	gxtkGraphics.prototype.LoadSurface = function( path ){
+		var cache = assetsCache[path];
+		if (typeof(cache) !== 'undefined' && cache !== null) {
+			return new gxtkSurface( cache,this );
+		}
+	
+		var app = this.app;
+
+		function onloadfun(){
+			app.DecLoading();			
+			assetsCache[path] = this;
+		}
+
+		app.IncLoading();
+
+		var image = loadImage( path, onloadfun);
+		if (image) return new gxtkSurface( image,this );
+
+		app.DecLoading();
+
+		return null;
+	}
+	
+	for(var i = data.length - 1; i >= 0; i--) {
+		path = data[i].match(/\[(.*)\]/i);
+		if (path !== null) {
+			bb_graphics_device.LoadSurface('monkey://data/' + path[1]);
+		}
+	}	
+}
