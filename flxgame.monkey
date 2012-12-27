@@ -128,7 +128,7 @@ Public
 		_iState = initialState
 		_requestedState = Null
 		_requestedReset = True
-		_created = False		
+		_created = False
 	End Method
 	
 	Method OnCreate:Int()	
@@ -186,6 +186,11 @@ Public
 	End Method
 	
 	Method OnRender:Int()
+		If (_state <> _requestedState) Then
+			_SwitchState()
+			Return 0
+		EndIf
+	
 		FlxBasic._VisibleCount = 0
 		_Draw()
 		Return 0
@@ -233,7 +238,7 @@ Private
 		Local timeManager:TimerManager = FlxTimer.Manager()
 		If (timeManager <> Null) timeManager.Clear()		
 		
-		If (_state <> Null) _state.Destroy()		
+		If (_state <> Null) _state.Destroy()
 		
 		_state = _requestedState
 		_state.Create()
@@ -275,7 +280,7 @@ Private
 			_replaying = True
 		End If
 		
-		If (_state <> _requestedState) _SwitchState()
+		If (_state <> _requestedState) Return
 		
 		FlxBasic._ActiveCount = 0
 		
