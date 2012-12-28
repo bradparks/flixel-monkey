@@ -1,20 +1,20 @@
 Strict
 
-Import flxcacheclayer
+Import flxcacheatlas
 Import flxcacheentry
 
 Class FlxCache
 
 #If FLX_CACHE_STRATEGY = "default"
-	Const LAYER_SIZE:Int = 1024
+	Const ATLAS_SIZE:Int = 1024
 	
-	Const LAYERS_PER_STATE:Int = 2
+	Const ATLASES_PER_STATE:Int = 2
 	
-	Const LAYERS_PER_GAME:Int = 4
+	Const ATLASES_PER_GAME:Int = 4
 #End
 
 Private
-	Field _layers:StringMap<FlxCacheLayer>
+	Field _layers:StringMap<FlxCacheAtlas>
 	
 Public
 	Method New()
