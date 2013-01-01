@@ -52,10 +52,34 @@ Public
 		_usedRectangles.Clear()
 		_freeRectangles.Clear()
 		_freeRectangles.Push(New FlxRect(0, 0, _width, _height))
-	End Method
+	End Method	
 	
-	Method SplitFreeNode:Bool()
-		Return False
+	Method SplitFreeNode:Bool(freeNode:FlxRect, usedNode:FlxRect)
+		If (usedNode.x >= freeNode.x + freeNode.width Or usedNode.x + usedNode.width <= freeNode.x Or usedNode.y >= freeNode.y + freeNode.height Or usedNode.y + usedNode.height <= freeNode.y) Then
+			Return False
+		End If
+		
+		If (usedNode.x < freeNode.x + freeNode.width And usedNode.x + usedNode.width > freeNode.x) Then
+			If (usedNode.y > freeNode.y And usedNode.y < freeNode.y + freeNode.height) Then
+				_freeRectangles.Push(New FlxRect(freeNode.x, freeNode.y, freeNode.width, usedNode.y - freeNode.y))
+			End If
+			
+			If (usedNode.y + usedNode.height < freeNode.y + freeNode.height) Then
+				_freeRectangles.Push(New FlxRect(freeNode.x, usedNode.y + usedNode.height, freeNode.width, freeNode.y + freeNode.height - (usedNode.y + usedNode.height)))
+			End If
+		End If
+		
+		If (usedNode.y < freeNode.y + freeNode.height And usedNode.y + usedNode.height > freeNode.y)
+			If (usedNode.y > freeNode.y And usedNode.y < freeNode.y + freeNode.height) Then
+				_freeRectangles.Push(New FlxRect(freeNode.x, freeNode.y, usedNode.x - freeNode.x, freeNode.height))
+			End If
+			
+			If (usedNode.y + usedNode.height < freeNode.y + freeNode.height) Then
+				_freeRectangles.Push(New FlxRect(usedNode.x + usedNode.width, freeNode.y, freeNode.x + freeNode.width - (usedNode.x + usedNode.width), freeNode.height))
+			End If			
+		End If
+		
+		Return True
 	End Method
 	
 	Method PruneFreeList:Void()
