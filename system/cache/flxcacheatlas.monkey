@@ -9,17 +9,17 @@ Import flixel.system.flximagedata
 
 Class FlxCacheAtlas
 
+	Const RECT_BEST_SHORT_SIDE_FIT:Int = 0
+	
+	Const RECT_BEST_LONG_SIDE_FIT:Int = 1
+	
+	Const RECT_BEST_AREA_FIT:Int = 2
+	
+	Const RECT_BOTTOM_LEFT_RULE:Int = 3
+	
+	Const RECT_CONTACT_POINT_RULE:Int = 4
+
 Private
-	Const _RECT_BEST_SHORT_SIDE_FIT:Int = 0
-	
-	Const _RECT_BEST_LONG_SIDE_FIT:Int = 1
-	
-	Const _RECT_BEST_AREA_FIT:Int = 2
-	
-	Const _RECT_BOTTOM_LEFT_RULE:Int = 3
-	
-	Const _RECT_CONTACT_POINT_RULE:Int = 4
-	
 	Field _width:Int
 	
 	Field _height:Int
