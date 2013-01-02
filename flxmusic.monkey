@@ -3,7 +3,7 @@ Strict
 Import mojo.audio
 
 Import flxsound
-Import system.flxassetsmanager
+Import flixel.system.flxassetsmanager
 
 Class FlxMusic Extends FlxSound
 

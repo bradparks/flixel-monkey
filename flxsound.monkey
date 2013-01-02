@@ -6,8 +6,8 @@ Import flxbasic
 Import flxobject
 Import flxu
 Import flxg
-Import system.flxassetsmanager
-Import system.flxresourcesmanager
+Import flixel.system.flxassetsmanager
+Import flixel.system.flxresourcesmanager
 
 Class FlxSound Extends FlxBasic
 	
