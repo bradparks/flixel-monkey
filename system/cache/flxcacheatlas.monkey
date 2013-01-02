@@ -24,11 +24,15 @@ Private
 	
 	Field _height:Int
 
-	Field _usedRectangles:Stack<FlxRect>
+	Field _usedRectangles:Stack<ImageRect>
 	
 	Field _freeRectangles:Stack<FlxRect>
 	
 	Field _atlasData:FlxImageData
+	
+	Field _score1:Int
+	
+	Field _score2:Int
 	
 Public
 	Method New(size:Int)
@@ -52,7 +56,39 @@ Public
 		_usedRectangles.Clear()
 		_freeRectangles.Clear()
 		_freeRectangles.Push(New FlxRect(0, 0, _width, _height))
-	End Method	
+	End Method
+	
+	Method FindPositionForNewNodeContactPoint:FlxRect(width:Int, height:Int)
+		'Local bestNode:FlxRect
+	End Method
+	
+	Method ContactPointScoreNode:Int(x:Int, y:Int, width:Int, height:Int)
+		Local score:Int = 0
+		
+		If (x = 0 Or x + width = _width) score += height
+		If (y = 0 Or y + height = _height) score += width
+		
+		Local i:Int = 0, l:Int = _usedRectangles.Length(), rect:FlxRect
+		
+		While (i < l)
+			rect = _usedRectangles.Get(i)
+			
+			If (rect.x = x + width Or rect.x + rect.width = x) Then
+				score += CommonIntervalLength(rect.y, rect.y + rect.height, y, y + height)
+			End If
+			
+			If (rect.y = y + height Or rect.y + rect.height = y) Then
+				score += CommonIntervalLength(rect.x, rect.x + rect.width, x, x + width)
+			End If
+			
+			i += 1
+		Wend
+	End Method
+	
+	Method CommonIntervalLength:Int(i1start:Int, i1end:Int, i2start:Int, i2end:Int)
+		If (i1end < i2start Or i2end < i1start) Return 0
+		Return Min(i1end, i2end) - Max(i1start, i2start)
+	End Method
 	
 	Method SplitFreeNode:Bool(freeNode:FlxRect, usedNode:FlxRect)
 		If (usedNode.x >= freeNode.x + freeNode.width Or usedNode.x + usedNode.width <= freeNode.x Or usedNode.y >= freeNode.y + freeNode.height Or usedNode.y + usedNode.height <= freeNode.y) Then
@@ -107,6 +143,18 @@ Public
 	
 	Method IsContainedIn(a:FlxRect, b:FlxRect)
 		Return (a.x >= b.x And a.y >= b.y And a.Right < b.Right And a.Bottom <= b.Bottom)
+	End Method
+
+End Class
+
+Private
+Class ImageRect Extends FlxRect
+
+	Field image:Image
+	
+	Method New(image:Image)
+		Super.New()
+		Self.image = image
 	End Method
 
 End Class

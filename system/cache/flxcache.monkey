@@ -1,7 +1,6 @@
 Strict
 
 Import flxcacheatlas
-Import flxcacheentry
 
 Class FlxCache
 
@@ -14,7 +13,11 @@ Class FlxCache
 #End
 
 Private
-	Field _layers:StringMap<FlxCacheAtlas>
+	Field _atlasCache:StringMap<FlxCacheAtlas>
+	
+	Field _assetCache:StringMap<Image>
+	
+	Field _imageCache:StringMap<Image>
 	
 Public
 	Method New()
@@ -25,8 +28,10 @@ End Class
 
 Interface FlxCacheable
 	
-	Method OnCache:FlxCacheEntry()
+	Method OnCache:Object()
 	
 	Method OnCacheComplete:Void(data:Object)
+	
+	Method GetCacheKey:String()
 
 End Interface
