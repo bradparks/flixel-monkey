@@ -59,7 +59,7 @@ Public
 	End Method
 	
 	Method FindPositionForNewNodeContactPoint:FlxRect(width:Int, height:Int)
-		'Local bestNode:FlxRect
+		Return Null
 	End Method
 	
 	Method ContactPointScoreNode:Int(x:Int, y:Int, width:Int, height:Int)
@@ -83,6 +83,8 @@ Public
 			
 			i += 1
 		Wend
+		
+		Return score
 	End Method
 	
 	Method CommonIntervalLength:Int(i1start:Int, i1end:Int, i2start:Int, i2end:Int)
@@ -141,7 +143,7 @@ Public
 		Wend
 	End Method
 	
-	Method IsContainedIn(a:FlxRect, b:FlxRect)
+	Method IsContainedIn:Bool(a:FlxRect, b:FlxRect)
 		Return (a.x >= b.x And a.y >= b.y And a.Right < b.Right And a.Bottom <= b.Bottom)
 	End Method
 

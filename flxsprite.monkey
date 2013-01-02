@@ -10,6 +10,10 @@ Import flxg
 
 Import system.flxanim
 Import system.flxcolor
+Import system.flxassetsmanager
+Import system.asset.flximageasset
+
+
 
 Import "data/default_flx.png"
 
@@ -42,7 +46,7 @@ Class FlxSprite Extends FlxObject
 	Field _camera:FlxCamera
 	
 Private
-	Global _GraphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
+	'Global _GraphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
 
 	Field _animations:StringMap<FlxAnim>
 	
@@ -132,13 +136,13 @@ Public
 	Method LoadGraphic:FlxSprite(graphic:String, animated:Bool = False, reverse:Bool = False, width:Int = 0, height:Int = 0, unique:Bool = False)
 		_bakedRotation = 0
 		
-		_GraphicLoader.name = graphic
-		_GraphicLoader.animated = animated
-		_GraphicLoader.width = width
-		_GraphicLoader.height = height
-		
-		_pixels = FlxG.AddBitmap(graphic, _GraphicLoader, unique)
-		
+		If (unique) Then
+			Local asset:FlxImageAsset = FlxAssetsManager.AddImage(graphic, New FlxImageAsset(), True)
+			_pixels = FlxAssetsManager.GetImage(asset.name, width, height, animated)
+		Else
+			_pixels = FlxAssetsManager.GetImage(graphic, width, height, animated)
+		End If
+
 		_flipped = reverse
 		
 		Self.width = _pixels.Width()
@@ -570,41 +574,4 @@ Private
 		dirty = False
 	End Method
 	
-End Class
-
-Private
-Class FlxGraphicLoader Extends FlxResourceLoader<Image>
-
-	Field name:String
-	Field animated:Bool
-	Field width:Float
-	Field height:Float
-
-	Method Load:Image(name:String)
-		Local image:Image = LoadImage(FlxAssetsManager.GetImagePath(Self.name))
-		
-		If (Not animated) Then
-			Return image
-		Else
-			Local frames:Int
-			
-			If (width = 0 And height = 0) Then
-				width = image.Height()			
-			ElseIf (width = 0) Then
-				width = height			
-			ElseIf (height = 0) Then
-				height = width
-			End If
-			
-			If (height = 0) Then
-				frames = Ceil(image.Width() / width)
-				height = width
-			Else
-				frames = Ceil((image.Width() * image.Height()) / (width * height))
-			End If
-			
-			Return image.GrabImage(0, 0, width, height, frames)
-		End If		
-	End Method
-
 End Class

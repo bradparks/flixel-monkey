@@ -13,6 +13,7 @@ Import flxbasic
 Import flxpath
 
 Import system.flxtile
+Import system.flxassetsmanager
 Import system.flxtilemapbuffer
 
 Import "data/autotiles_flx.png"
@@ -41,8 +42,6 @@ Class FlxTilemap Extends FlxObject
 	Field totalTiles:Int
 	
 Private
-	Global _TileLoader:FlxTileLoader = New FlxTileLoader()
-
 	Field _tiles:Image
 	
 	Field _buffers:IntMap<FlxTilemapBuffer>
@@ -165,7 +164,7 @@ Public
 			Wend
 		End If
 		
-		_tiles = FlxG.AddBitmap(tileGraphic, _TileLoader)
+		_tiles = FlxAssetsManager.GetImage(tileGraphic, tileWidth, tileHeight, True)
 		
 		_tileWidth = tileWidth		
 		If (_tileWidth = 0) _tileWidth = _tiles.Height()
@@ -1160,15 +1159,6 @@ Private
 		End If
 		
 		_rects[index] = New FlxRect(rx, ry, _tileWidth, _tileHeight)
-	End Method
-
-End Class
-
-Private
-Class FlxTileLoader Extends FlxResourceLoader<Image>
-
-	Method Load:Image(name:String)
-		Return LoadImage(FlxAssetsManager.GetImagePath(name))	
 	End Method
 
 End Class

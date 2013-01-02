@@ -12,7 +12,7 @@ Class FlxCacheEntry Extends FlxRect
 	Method New(key:String, image:Image)
 		Super.New()
 		Self.key = key
-		Self.image = image
+		data = image
 	End Method
 
 End Class

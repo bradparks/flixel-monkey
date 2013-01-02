@@ -3,12 +3,14 @@ Strict
 Import flixel.flxextern
 Import flixel.flxtext
 Import flixel.system.flxfont
+Import flixel.system.asset.flximageasset
 
 Class FlxAssetsManager
 
 Private
+	Global _Images:StringMap<FlxImageAsset>
+
 	Global _Fonts:StringMap<FlxFont>[]
-	Global _Images:StringMap<String>
 	Global _Sounds:StringMap<String>
 	Global _Music:StringMap<String>
 	Global _Cursors:StringMap<String>
@@ -16,6 +18,8 @@ Private
 	
 Public	
 	Function Init:Void()
+		_Images = New StringMap<FlxImageAsset>()
+	
 		_Fonts = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
 	
 		Local l:Int = _Fonts.Length()
@@ -23,12 +27,60 @@ Public
 			_Fonts[i] = New StringMap<FlxFont>()
 		Next
 		
-		_Images = New StringMap<String>()
 		_Sounds = New StringMap<String>()
 		_Music = New StringMap<String>()
 		_Cursors = New StringMap<String>()
 		_Strings = New StringMap<String>()
 	End Function
+	
+	Function AddImage:Void(name:String, path:String)
+		AddImage(name, New FlxImageAsset(name, path))
+	End Function
+	
+	Function AddImage:FlxImageAsset(name:String, asset:FlxImageAsset, unique:Bool = False)
+		If (_Images.Get(name) <> Null) Then
+			If ( Not unique) Return asset
+			
+			Local index:Int = 0
+			Local uname:String = name + index
+			
+			While (_Images.Get(uname) <> Null)
+				index += 1
+				uname = name + index
+			Wend
+			
+			name = uname
+			asset.name = name
+			asset.path = _Images.Get(name).path
+		End If
+		
+		_Images.Set(name, asset)
+		Return asset
+	End Function
+	
+	Function RemoveImage:Void(name:String)
+		_Images.Remove(name)
+	End Function
+	
+	Function GetImage:Image(name:String, width:Int, height:Int, animated:Bool)
+		Local asset:FlxImageAsset = _Images.Get(name)
+		
+		If (asset = Null) Return Null
+		If (asset.data <> Null) Return asset.data
+		
+	 	If (width <> 0) asset.width = width
+		If (height <> 0) asset.height = height
+		asset.animated = animated		
+		asset.Load()
+		
+		Return asset.data
+	End Function
+	
+	#Rem
+	Function GetImageAsset:FlxImageAsset(name:String,)
+	
+	
+	#End
 	
 	Function AddFont:FlxFont(name:String, driver:Int = FlxText.DRIVER_NATIVE)
 		Local font:FlxFont = _Fonts[driver].Get(name)
@@ -51,23 +103,7 @@ Public
 	Function GetFont:FlxFont(name:String, driver:Int = FlxText.DRIVER_NATIVE)
 		Return _Fonts[driver].Get(name)
 	End Function
-	
-	Function AddImage:Void(name:String, path:String)
-		_Images.Set(name, path)
-	End Function
-	
-	Function RemoveImage:Void(name:String)
-		_Images.Remove(name)
-	End Function
-	
-	Function GetImagePath:String(name:String)
-		Return _Images.Get(name)
-	End Function
-	
-	Function AllImages:MapKeys<String, String>()
-		Return _Images.Keys()
-	End Function
-	
+
 	Function AddSound:Void(name:String, path:String)
 		_Sounds.Set(name, path)
 	End Function

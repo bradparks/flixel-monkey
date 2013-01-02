@@ -25,6 +25,7 @@ Import system.resolutionpolicy.fill
 Import system.flxresourcesmanager
 Import system.flxquadtree
 Import system.flxreplay
+Import system.flxcache
 
 Import plugin.timermanager
 Import plugin.debugpathdisplay
@@ -119,6 +120,8 @@ Class FlxG
 	Global Updaterate:Int
 	
 	Global Tweener:FlxBasic
+	
+	Global Cache:FlxCache
 	
 	Global _DeviceScaleFactorX:Float = 1	
 	
@@ -640,7 +643,9 @@ Public
 		
 		FlxG.Scores = New Stack<Int>()
 		FlxG.Levels = New Stack<Int>()
-		FlxG.VisualDebug = False	
+		FlxG.VisualDebug = False
+		
+		FlxG.Cache = New FlxCache()
 	End Function
 	
 	Function Reset:Void()
