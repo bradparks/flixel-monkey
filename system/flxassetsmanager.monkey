@@ -62,7 +62,7 @@ Public
 		_Images.Remove(name)
 	End Function
 	
-	Function GetImage:Image(name:String, width:Int, height:Int, animated:Bool)
+	Function GetImage:Image(name:String, width:Int = 0, height:Int = 0, animated:Bool = False)
 		Local asset:FlxImageAsset = _Images.Get(name)
 		
 		If (asset = Null) Return Null
